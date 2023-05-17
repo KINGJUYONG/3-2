@@ -1,0 +1,237 @@
+CREATE TABLE 회원(
+    회원번호 VARCHAR(20) NOT NULL PRIMARY KEY,
+    회원이름 VARCHAR(10) NOT NULL,
+    휴대전화 VARCHAR(20) NOT NULL,
+    등급 VARCHAR(10),
+    카드번호 VARCHAR(20) NOT NULL,
+    비밀번호 VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE 기차역(
+    역순번 VARCHAR(3) NOT NULL,
+    역이름 VARCHAR(10) DEFAULT ('서울') NOT NULL,
+    CHECK(역순번 > 0 AND 역순번 < 6),
+    CHECK(역이름 IN ('서울', '천안', '대전', '대구', '부산')),
+    CONSTRAINT 기차역_기본키 PRIMARY KEY(역순번, 역이름)
+);
+INSERT INTO 기차역 VALUES(1, '서울');
+INSERT INTO 기차역 VALUES(2, '천안');
+INSERT INTO 기차역 VALUES(3, '대전');
+INSERT INTO 기차역 VALUES(4, '대구');
+INSERT INTO 기차역 VALUES(5, '부산');
+INSERT INTO 기차역 VALUES(5, '서울');
+INSERT INTO 기차역 VALUES(4, '천안');
+INSERT INTO 기차역 VALUES(3, '대전');
+INSERT INTO 기차역 VALUES(2, '대구');
+INSERT INTO 기차역 VALUES(1, '부산');
+
+CREATE TABLE 열차(
+    열차번호 VARCHAR(2) NOT NULL PRIMARY KEY,
+    열차등급 VARCHAR(3) DEFAULT ('SM') NOT NULL,
+    CHECK(열차등급 IN ('SM', 'MG'))
+);
+INSERT INTO 열차 VALUES(1, 'SM');
+INSERT INTO 열차 VALUES(2, 'MG');
+
+CREATE TABLE 열차좌석(
+    열차번호 VARCHAR(2) NOT NULL,
+    차량번호 VARCHAR(1) NOT NULL,
+    좌석번호 VARCHAR(1) NOT NULL,
+    CONSTRAINT 열차좌석_기본키 PRIMARY KEY(열차번호, 차량번호, 좌석번호),
+    CONSTRAINT 열차좌석_외래키 FOREIGN KEY(열차번호) REFERENCES 열차 (열차번호)
+);
+INSERT INTO 열차좌석 VALUES(1, 1, 1);
+INSERT INTO 열차좌석 VALUES(1, 1, 2);
+INSERT INTO 열차좌석 VALUES(1, 1, 3);
+INSERT INTO 열차좌석 VALUES(1, 1, 4);
+INSERT INTO 열차좌석 VALUES(1, 2, 1);
+INSERT INTO 열차좌석 VALUES(1, 2, 2);
+INSERT INTO 열차좌석 VALUES(1, 2, 3);
+INSERT INTO 열차좌석 VALUES(1, 2, 4);
+INSERT INTO 열차좌석 VALUES(2, 1, 1);
+INSERT INTO 열차좌석 VALUES(2, 1, 2);
+INSERT INTO 열차좌석 VALUES(2, 1, 3);
+INSERT INTO 열차좌석 VALUES(2, 1, 4);
+INSERT INTO 열차좌석 VALUES(2, 1, 5);
+INSERT INTO 열차좌석 VALUES(2, 1, 6);
+INSERT INTO 열차좌석 VALUES(2, 2, 1);
+INSERT INTO 열차좌석 VALUES(2, 2, 2);
+INSERT INTO 열차좌석 VALUES(2, 2, 3);
+INSERT INTO 열차좌석 VALUES(2, 2, 4);
+INSERT INTO 열차좌석 VALUES(2, 2, 5);
+INSERT INTO 열차좌석 VALUES(2, 2, 6);
+
+CREATE TABLE 운행시간표(
+    역순번 VARCHAR(3) NOT NULL,
+    역이름 VARCHAR(10) NOT NULL,
+    열차번호 VARCHAR(2) NOT NULL,
+    방향 VARCHAR(4) NOT NULL,
+    시간 DATE NOT NULL,
+    CONSTRAINT 운행시간표_기본키 PRIMARY KEY(역순번, 열차번호, 방향, 시간),
+    CONSTRAINT 운행시간표_외래키1 FOREIGN KEY(역순번, 역이름) REFERENCES 기차역 (역순번, 역이름),
+    CONSTRAINT 운행시간표_외래키2 FOREIGN KEY(열차번호) REFERENCES 열차 (열차번호),
+    CHECK(역순번 > 0 AND 역순번 < 6),
+    CHECK(방향 IN ('상행', '하행'))
+);
+INSERT INTO 운행시간표 VALUES(1, '서울', 1, '하행', TO_DATE('9999/12/31 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '천안', 1, '하행', TO_DATE('9999/12/31 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 1, '하행', TO_DATE('9999/12/31 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '대구', 1, '하행', TO_DATE('9999/12/31 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '부산', 1, '하행', TO_DATE('9999/12/31 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(1, '부산', 2, '상행', TO_DATE('9999/12/31 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '대구', 2, '상행', TO_DATE('9999/12/31 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 2, '상행', TO_DATE('9999/12/31 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '천안', 2, '상행', TO_DATE('9999/12/31 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '서울', 2, '상행', TO_DATE('9999/12/31 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+
+INSERT INTO 운행시간표 VALUES(1, '서울', 1, '하행', TO_DATE('2022/11/16 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '천안', 1, '하행', TO_DATE('2022/11/16 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 1, '하행', TO_DATE('2022/11/16 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '대구', 1, '하행', TO_DATE('2022/11/16 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '부산', 1, '하행', TO_DATE('2022/11/16 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(1, '부산', 2, '상행', TO_DATE('2022/11/16 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '대구', 2, '상행', TO_DATE('2022/11/16 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 2, '상행', TO_DATE('2022/11/16 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '천안', 2, '상행', TO_DATE('2022/11/16 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '서울', 2, '상행', TO_DATE('2022/11/16 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+
+INSERT INTO 운행시간표 VALUES(1, '서울', 1, '하행', TO_DATE('2022/11/17 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '천안', 1, '하행', TO_DATE('2022/11/17 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 1, '하행', TO_DATE('2022/11/17 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '대구', 1, '하행', TO_DATE('2022/11/17 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '부산', 1, '하행', TO_DATE('2022/11/17 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(1, '부산', 2, '상행', TO_DATE('2022/11/17 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '대구', 2, '상행', TO_DATE('2022/11/17 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 2, '상행', TO_DATE('2022/11/17 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '천안', 2, '상행', TO_DATE('2022/11/17 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '서울', 2, '상행', TO_DATE('2022/11/17 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+
+INSERT INTO 운행시간표 VALUES(1, '서울', 1, '하행', TO_DATE('2022/11/18 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '천안', 1, '하행', TO_DATE('2022/11/18 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 1, '하행', TO_DATE('2022/11/18 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '대구', 1, '하행', TO_DATE('2022/11/18 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '부산', 1, '하행', TO_DATE('2022/11/18 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(1, '부산', 2, '상행', TO_DATE('2022/11/18 13:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(2, '대구', 2, '상행', TO_DATE('2022/11/18 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(3, '대전', 2, '상행', TO_DATE('2022/11/18 15:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(4, '천안', 2, '상행', TO_DATE('2022/11/18 16:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO 운행시간표 VALUES(5, '서울', 2, '상행', TO_DATE('2022/11/18 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+
+
+CREATE TABLE 배정좌석(
+    역순번 VARCHAR(3) NOT NULL, 
+    역이름 VARCHAR(10) NOT NULL,
+    열차번호 VARCHAR(2) NOT NULL,
+    방향 VARCHAR(4) NOT NULL, 
+    시간 DATE NOT NULL, 
+    차량번호 VARCHAR(1) NOT NULL,
+    좌석번호 VARCHAR(1) NOT NULL,
+    회원번호 VARCHAR(20) NOT NULL, 
+    예약번호 VARCHAR(30) NOT NULL, 
+    출발역 VARCHAR(6) NOT NULL, 
+    도착역 VARCHAR(6) NOT NULL, 
+    예매일시 DATE NOT NULL, 
+    금액 VARCHAR(10) NOT NULL,
+    카드번호 VARCHAR(20),
+    CONSTRAINT 배정좌석_기본키 PRIMARY KEY(역순번, 열차번호, 방향, 시간, 차량번호, 좌석번호),
+    CONSTRAINT 배정좌석_외래키1 FOREIGN KEY(역순번, 역이름) REFERENCES 기차역 (역순번, 역이름),
+    CONSTRAINT 배정좌석_외래키2 FOREIGN KEY(열차번호, 차량번호, 좌석번호) REFERENCES 열차좌석 (열차번호, 차량번호, 좌석번호),
+    CONSTRAINT 배정좌석_외래키3 FOREIGN KEY(회원번호) REFERENCES 회원 (회원번호),
+    CONSTRAINT 배정좌석_외래키4 FOREIGN KEY(역순번, 열차번호, 방향, 시간) REFERENCES 운행시간표 (역순번, 열차번호, 방향, 시간)
+);
+INSERT INTO 배정좌석 VALUES(1, '서울', 1, '하행', TO_DATE('2022/11/17 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), )
+
+CREATE TABLE 요금표(
+    역순번 VARCHAR(3) NOT NULL,
+    역이름 VARCHAR(10) NOT NULL,
+    출발역 VARCHAR(6) NOT NULL,
+    도착역 VARCHAR(6) NOT NULL,
+    열차등급 VARCHAR(4) NOT NULL,
+    요금 VARCHAR(10) NOT NULL,
+    CONSTRAINT 요금표_기본키 PRIMARY KEY(출발역, 도착역, 열차등급, 요금),
+    CONSTRAINT 요금표_외래키3 FOREIGN KEY(역순번, 역이름) REFERENCES 기차역 (역순번, 역이름),
+    CHECK(출발역 != 도착역),
+    CHECK(도착역 != 출발역),
+    CHECK(열차등급 IN ('SM', 'MG')),
+    CHECK(요금 < 0)
+);
+
+insert INTO 요금표 values(1, '부산', '부산', '대구', 'SM', 1000);
+insert INTO 요금표 values(1, '부산', '부산', '대전', 'SM', 2000);
+insert INTO 요금표 values(1, '부산', '부산', '천안', 'SM', 3000);
+insert INTO 요금표 values(1, '부산', '부산', '서울', 'SM', 4000);
+insert INTO 요금표 values(1, '부산', '부산', '대구', 'MG', 2000);
+insert INTO 요금표 values(1, '부산', '부산', '대전', 'MG', 3000);
+insert INTO 요금표 values(1, '부산', '부산', '천안', 'MG', 4000);
+insert INTO 요금표 values(1, '부산', '부산', '서울', 'MG', 5000);
+
+insert INTO 요금표 values(2, '대구', '대구', '대전', 'SM', 1000);
+insert INTO 요금표 values(2, '대구', '대구', '천안', 'SM', 2000);
+insert INTO 요금표 values(2, '대구', '대구', '서울', 'SM', 3000);
+insert INTO 요금표 values(2, '대구', '대구', '부산', 'SM', 1000);
+insert INTO 요금표 values(2, '대구', '대구', '부산', 'MG', 2000);
+insert INTO 요금표 values(2, '대구', '대구', '대전', 'MG', 2000);
+insert INTO 요금표 values(2, '대구', '대구', '천안', 'MG', 3000);
+insert INTO 요금표 values(2, '대구', '대구', '서울', 'MG', 4000);
+
+insert INTO 요금표 values(3, '대전', '대전', '대구', 'SM', 1000);
+insert INTO 요금표 values(3, '대전', '대전', '천안', 'SM', 1000);
+insert INTO 요금표 values(3, '대전', '대전', '서울', 'SM', 2000);
+insert INTO 요금표 values(3, '대전', '대전', '부산', 'SM', 2000);
+insert INTO 요금표 values(3, '대전', '대전', '대구', 'MG', 2000);
+insert INTO 요금표 values(3, '대전', '대전', '천안', 'MG', 2000);
+insert INTO 요금표 values(3, '대전', '대전', '서울', 'MG', 3000);
+insert INTO 요금표 values(3, '대전', '대전', '부산', 'MG', 3000);
+
+insert INTO 요금표 values(4, '천안', '천안', '대구', 'SM', 2000);
+insert INTO 요금표 values(4, '천안', '천안', '대전', 'SM', 1000);
+insert INTO 요금표 values(4, '천안', '천안', '서울', 'SM', 1000);
+insert INTO 요금표 values(4, '천안', '천안', '부산', 'SM', 3000);
+insert INTO 요금표 values(4, '천안', '천안', '대구', 'MG', 3000);
+insert INTO 요금표 values(4, '천안', '천안', '대전', 'MG', 2000);
+insert INTO 요금표 values(4, '천안', '천안', '서울', 'MG', 2000);
+insert INTO 요금표 values(4, '천안', '천안', '부산', 'MG', 4000);
+
+insert INTO 요금표 values(5, '서울', '서울', '대구', 'SM', 3000);
+insert INTO 요금표 values(5, '서울', '서울', '대전', 'SM', 2000);
+insert INTO 요금표 values(5, '서울', '서울', '천안', 'SM', 1000);
+insert INTO 요금표 values(5, '서울', '서울', '부산', 'SM', 4000);
+insert INTO 요금표 values(5, '서울', '서울', '대구', 'MG', 4000);
+insert INTO 요금표 values(5, '서울', '서울', '대전', 'MG', 3000);
+insert INTO 요금표 values(5, '서울', '서울', '천안', 'MG', 2000);
+insert INTO 요금표 values(5, '서울', '서울', '부산', 'MG', 5000);
+
+
+
+
+CREATE TABLE 예약현황(
+    예약번호 VARCHAR(30) NOT NULL PRIMARY KEY,
+    회원번호 VARCHAR(20) NOT NULL,
+    출발역 VARCHAR(6) NOT NULL,
+    도착역 VARCHAR(6) NOT NULL,
+    예매일시 DATE NOT NULL,
+    금액 VARCHAR(10) NOT NULL,
+    결제방법 VARCHAR(6) NOT NULL,
+    CONSTRAINT 예약현황_외래키 FOREIGN KEY(회원번호) REFERENCES 회원 (회원번호),
+    CHECK(출발역 != 도착역),
+    CHECK(도착역 != 출발역),
+    CHECK(금액 < 0),
+    CHECK(결제방법 IN ('현금', '카드'))
+);
+CREATE TABLE 예약좌석(
+    역순번 VARCHAR(3) NOT NULL,
+    역이름 VARCHAR(10) NOT NULL,
+    열차번호 VARCHAR(2) NOT NULL,
+    방향 VARCHAR(1) NOT NULL,
+    시간 DATE NOT NULL,
+    운행날짜 DATE NOT NULL,
+    차량번호 VARCHAR(1) NOT NULL,
+    좌석번호 VARCHAR(1) NOT NULL,
+    예약번호 VARCHAR(30) NOT NULL,
+    CONSTRAINT 예약좌석_기본키 PRIMARY KEY(역순번, 열차번호, 방향, 시간, 운행날짜, 차량번호, 좌석번호),
+    CONSTRAINT 예약좌석_외래키1 FOREIGN KEY(역순번, 역이름) REFERENCES 기차역 (역순번, 역이름),
+    CONSTRAINT 예약좌석_외래키3 FOREIGN KEY(열차번호, 차량번호, 좌석번호) REFERENCES 열차좌석 (열차번호, 차량번호, 좌석번호),
+    CONSTRAINT 예약좌석_외래키8 FOREIGN KEY(예약번호) REFERENCES 예약현황 (예약번호),
+    CHECK(역순번 > 0 AND 역순번 < 6)
+);
+INSERT INTO 예약현황 VALUES(1, '서울', '1', '하행', TO_DATE('9999/12/31 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('9999/12/31', 'YYYY-MM-DD'), 1, 1, (SELECT 열차등급 FROM 열차 WHERE 열차번호 = 1) + );

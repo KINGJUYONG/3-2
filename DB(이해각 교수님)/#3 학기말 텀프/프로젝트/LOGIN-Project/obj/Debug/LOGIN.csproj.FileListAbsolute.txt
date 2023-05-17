@@ -1,0 +1,94 @@
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\bin\Debug\LOGIN.exe.config
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\bin\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\bin\Debug\LOGIN.pdb
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.csprojAssemblyReference.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.Form1.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.Form2.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.pdb
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe.config
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.pdb
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csprojAssemblyReference.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form1.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form2.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.pdb
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe.config
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.pdb
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.AssemblyReference.cache
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.SuggestedBindingRedirects.cache
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form1.resources
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form2.resources
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.exe
+C:\Users\kingjuyong\Desktop\로그인-SHA256예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.pdb
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.csproj.AssemblyReference.cache
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.csproj.SuggestedBindingRedirects.cache
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.exe
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.pdb
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\LOGIN.exe.config
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\LOGIN.exe
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\LOGIN.pdb
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.loginform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.src_reserv_form.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\AeroWizard.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\AeroWizard.xml
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\de\AeroWizard.resources.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\es\AeroWizard.resources.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\fr\AeroWizard.resources.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\it\AeroWizard.resources.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\pl\AeroWizard.resources.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\ru\AeroWizard.resources.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\bin\Debug\zh-CN\AeroWizard.resources.dll
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.csproj.CopyComplete
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.selectform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.lookupform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.addcarform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.gradeform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.findidform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.signupform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.findpwform.resources
+C:\Users\kingjuyong\Desktop\Rail\LOGIN-Project\obj\Debug\LOGIN.modifymemform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\LOGIN.exe.config
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\LOGIN.exe
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\LOGIN.pdb
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\AeroWizard.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\AeroWizard.xml
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\de\AeroWizard.resources.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\es\AeroWizard.resources.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\fr\AeroWizard.resources.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\it\AeroWizard.resources.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\pl\AeroWizard.resources.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\ru\AeroWizard.resources.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\bin\Debug\zh-CN\AeroWizard.resources.dll
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.csproj.AssemblyReference.cache
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.csproj.SuggestedBindingRedirects.cache
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.addcarform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.lookupform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.selectform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.findidform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.findpwform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.modifymemform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.gradeform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.src_reserv_form.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.signupform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.loginform.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.csproj.CopyComplete
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.exe
+C:\Users\kingjuyong\OneDrive\과제\3학년 2학기\DB(이해각 교수님)\#3 학기말 텀프\프로젝트\LOGIN-Project\obj\Debug\LOGIN.pdb

@@ -1,0 +1,1833 @@
+====================================================================================
+연습문제 정답
+====================================================================================
+1번
+====================================================================================
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE
+  3      ON DEPT
+  4      FOR EACH ROW
+  5  BEGIN
+  6      DBMS_OUTPUT.PUT_LINE('변경 전의 값 : ' || :OLD.DNAME);
+  7      DBMS_OUTPUT.PUT_LINE('변경 후의 값 : ' || :NEW.DNAME);
+  8  END;
+  9  /
+
+====================================================================================
+2번
+====================================================================================
+
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO = :NEW.C_NO;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE G_NO = :NEW.G_NO;
+  8  END;
+  9  /
+
+====================================================================================
+전체 SPOOL
+====================================================================================
+
+
+SQL> CREATE USER lee identified by lee DEFAULT TABLESPACE student;
+
+사용자가 생성되었습니다.
+
+SQL> CREATE USER kim identified by kim DEFAULT TABLESPACE student;
+
+사용자가 생성되었습니다.
+
+SQL> grant connect, resource to lee;
+
+권한이 부여되었습니다.
+
+SQL> grant connect, resource to kim;
+
+권한이 부여되었습니다.
+
+SQL> grant create role to scott with admin option;
+
+권한이 부여되었습니다.
+
+SQL> conn scott/tiger
+ERROR:
+ORA-28000: the account is locked 
+
+
+경고: 이제는 ORACLE에 연결되어 있지 않습니다.
+SQL> grant update(loc) on dept to lee with grant option;
+SP2-0640: 연결되지 않았습니다.
+SQL> conn king/1234
+연결되었습니다.
+SQL> grant update(loc) on dept to lee with grant option;
+
+권한이 부여되었습니다.
+
+SQL> grant select on dept to lee with grant option;
+
+권한이 부여되었습니다.
+
+SQL> conn lee/lee
+연결되었습니다.
+SQL> update scott.dept set loc='SEOUL' where deptno=10;
+update scott.dept set loc='SEOUL' where deptno=10
+             *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> update king.dept set loc='SEOUL' where deptno=10;
+
+1 행이 갱신되었습니다.
+
+SQL> select * from king.dept;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10 ACCOUNTING     SEOUL                                                 
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> grant update(loc) on king.dept  to kim;
+
+권한이 부여되었습니다.
+
+SQL> grant select on king.dept to kim;
+
+권한이 부여되었습니다.
+
+SQL> conn kim/kim
+연결되었습니다.
+SQL> update king.dept set loc='NEW YORK' where deptno=10;
+
+1 행이 갱신되었습니다.
+
+SQL> select * from king.dept;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> conn king/1234
+연결되었습니다.
+SQL> revoke update on emp from lee;
+revoke update on emp from lee
+*
+1행에 오류:
+ORA-01927: 허가하지 않은 권한을 REVOKE할 수 없습니다 
+
+
+SQL> revoke update on emp from lee;
+revoke update on emp from lee
+*
+1행에 오류:
+ORA-01927: 허가하지 않은 권한을 REVOKE할 수 없습니다 
+
+
+SQL> create role customer;
+create role customer
+*
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+
+SQL> grant select, update(sal) on emp to customer;
+grant select, update(sal) on emp to customer
+                                    *
+1행에 오류:
+ORA-01917: 사용자 또는 롤 'CUSTOMER'(이)가 존재하지 않습니다 
+
+
+SQL> conn system/1234
+연결되었습니다.
+SQL> create role customer;
+
+롤이 생성되었습니다.
+
+SQL> grant select, update(sal) on emp to customer;
+grant select, update(sal) on emp to customer
+                             *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> conn king/1234
+연결되었습니다.
+SQL> grant select, update(sal) on emp to customer;
+
+권한이 부여되었습니다.
+
+SQL> grant customer to lee  with admin option;
+grant customer to lee  with admin option
+*
+1행에 오류:
+ORA-01919: 롤 'CUSTOMER'(이)가 존재하지 않습니다 
+
+
+SQL> conn system/1234
+연결되었습니다.
+SQL> grant select, update(sal) on emp to customer;
+grant select, update(sal) on emp to customer
+                             *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> grant select, update(sal) on king.emp to customer;
+
+권한이 부여되었습니다.
+
+SQL> grant customer to lee  with admin option;
+
+권한이 부여되었습니다.
+
+SQL> grant select on king.emp to kim;
+
+권한이 부여되었습니다.
+
+SQL> conn lee/lee
+연결되었습니다.
+SQL> select * from king.emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7369 SMITH      CLERK           7902 80/12/17        800                  
+        20                                                                      
+                                                                                
+      7499 ALLEN      SALESMAN        7698 81/02/20       1600        300       
+        30                                                                      
+                                                                                
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500       
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7566 JONES      MANAGER         7839 81/04/02       2975                  
+        20                                                                      
+                                                                                
+      7654 MARTIN     SALESMAN        7698 81/09/28       1250       1400       
+        30                                                                      
+                                                                                
+      7698 BLAKE      MANAGER         7839 81/05/01       2850                  
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7782 CCC        MANAGER         7839 81/09/09       2450                  
+        10                                                                      
+                                                                                
+      7788 SCOTT      ANALYST         7566 82/12/09       3000                  
+        20                                                                      
+                                                                                
+      7839 CCC        PRESIDENT            81/11/17       5000                  
+        10                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7844 TURNER     SALESMAN        7698 81/09/08       1500          0       
+        30                                                                      
+                                                                                
+      7876 ADAMS      CLERK           7788 83/01/12       1100                  
+        20                                                                      
+                                                                                
+      7900 JAMES      CLERK           7698 81/12/03        950                  
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7902 FORD       ANALYST         7566 81/12/03       3000                  
+        20                                                                      
+                                                                                
+      7934 CCC        CLERK           7782 82/01/23       1300                  
+        10                                                                      
+                                                                                
+
+14 개의 행이 선택되었습니다.
+
+SQL> update king.emp set sal=sal+50 where empno=7369;
+
+1 행이 갱신되었습니다.
+
+SQL> conn kim/kim
+연결되었습니다.
+SQL> select * from king.emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7369 SMITH      CLERK           7902 80/12/17        850                  
+        20                                                                      
+                                                                                
+      7499 ALLEN      SALESMAN        7698 81/02/20       1600        300       
+        30                                                                      
+                                                                                
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500       
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7566 JONES      MANAGER         7839 81/04/02       2975                  
+        20                                                                      
+                                                                                
+      7654 MARTIN     SALESMAN        7698 81/09/28       1250       1400       
+        30                                                                      
+                                                                                
+      7698 BLAKE      MANAGER         7839 81/05/01       2850                  
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7782 CCC        MANAGER         7839 81/09/09       2450                  
+        10                                                                      
+                                                                                
+      7788 SCOTT      ANALYST         7566 82/12/09       3000                  
+        20                                                                      
+                                                                                
+      7839 CCC        PRESIDENT            81/11/17       5000                  
+        10                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7844 TURNER     SALESMAN        7698 81/09/08       1500          0       
+        30                                                                      
+                                                                                
+      7876 ADAMS      CLERK           7788 83/01/12       1100                  
+        20                                                                      
+                                                                                
+      7900 JAMES      CLERK           7698 81/12/03        950                  
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7902 FORD       ANALYST         7566 81/12/03       3000                  
+        20                                                                      
+                                                                                
+      7934 CCC        CLERK           7782 82/01/23       1300                  
+        10                                                                      
+                                                                                
+
+14 개의 행이 선택되었습니다.
+
+SQL> update king.emp set sal=sal+50 where empno=7369;
+update king.emp set sal=sal+50 where empno=7369
+            *
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+
+SQL> conn lee/lee
+연결되었습니다.
+SQL> update king.emp set sal=sal+50 where empno=7369;
+
+1 행이 갱신되었습니다.
+
+SQL> 
+SQL> conn kim/kim
+연결되었습니다.
+SQL> update king.emp set sal=sal+50 where empno=7369;
+update king.emp set sal=sal+50 where empno=7369
+            *
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+
+SQL> conn king/1234
+연결되었습니다.
+SQL> drop role customer;drop role customer;
+drop role customer;drop role customer
+                  *
+1행에 오류:
+ORA-00911: 문자가 부적합합니다 
+
+
+SQL> drop role customer;
+drop role customer
+*
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+
+SQL> system/1234
+SP2-0734: "system/123..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> conn system/1234
+연결되었습니다.
+SQL> drop role customer;
+
+롤이 삭제되었습니다.
+
+SQL> conn lee/lee
+연결되었습니다.
+SQL> select * from scott.emp;
+select * from scott.emp
+                    *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> select * from king.emp;
+select * from king.emp
+                   *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> conn kim/kim
+연결되었습니다.
+SQL> select * from king.emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7369 SMITH      CLERK           7902 80/12/17        900                  
+        20                                                                      
+                                                                                
+      7499 ALLEN      SALESMAN        7698 81/02/20       1600        300       
+        30                                                                      
+                                                                                
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500       
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7566 JONES      MANAGER         7839 81/04/02       2975                  
+        20                                                                      
+                                                                                
+      7654 MARTIN     SALESMAN        7698 81/09/28       1250       1400       
+        30                                                                      
+                                                                                
+      7698 BLAKE      MANAGER         7839 81/05/01       2850                  
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7782 CCC        MANAGER         7839 81/09/09       2450                  
+        10                                                                      
+                                                                                
+      7788 SCOTT      ANALYST         7566 82/12/09       3000                  
+        20                                                                      
+                                                                                
+      7839 CCC        PRESIDENT            81/11/17       5000                  
+        10                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7844 TURNER     SALESMAN        7698 81/09/08       1500          0       
+        30                                                                      
+                                                                                
+      7876 ADAMS      CLERK           7788 83/01/12       1100                  
+        20                                                                      
+                                                                                
+      7900 JAMES      CLERK           7698 81/12/03        950                  
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7902 FORD       ANALYST         7566 81/12/03       3000                  
+        20                                                                      
+                                                                                
+      7934 CCC        CLERK           7782 82/01/23       1300                  
+        10                                                                      
+                                                                                
+
+14 개의 행이 선택되었습니다.
+
+SQL> conn scott/tiger
+ERROR:
+ORA-28000: the account is locked 
+
+
+경고: 이제는 ORACLE에 연결되어 있지 않습니다.
+SQL> conn system/1234
+연결되었습니다.
+SQL> revoke all on emp from kim;
+revoke all on emp from kim
+              *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> revoke all on king.emp from kim;
+
+권한이 취소되었습니다.
+
+SQL> grant select any table to scott with admin option;
+
+권한이 부여되었습니다.
+
+SQL> conn king/1234
+연결되었습니다.
+SQL> grant select any table to kim;
+grant select any table to kim
+*
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+
+SQL> CREATE TABLE update_count
+  2          (count  NUMBER(3));
+
+테이블이 생성되었습니다.
+
+SQL> INSERT INTO update_count VALUES (0);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> CREATE or REPLACE TRIGGER emp_update
+  2   BEFORE update ON emp
+  3  BEGIN
+  4  update update_count set count=count+1;
+  5  END;
+  6  
+  7  
+  8  
+  9  
+ 10  
+ 11  
+ 12  
+ 13  
+ 14  
+ 15  
+ 16  
+ 17  
+ 18  
+ 19  
+ 20  
+ 21  
+ 22  
+ 23  
+ 24  
+ 25  
+ 26  
+ 27  
+ 28  
+ 29  
+ 30  
+ 31  
+ 32  
+ 33  
+ 34  
+ 35  
+ 36  
+ 37  
+ 38  
+ 39  
+ 40  
+ 41  
+ 42  
+ 43  
+ 44  
+ 45  
+ 46  
+ 47  
+ 48  
+ 49  
+ 50  asd
+ 51  .
+SQL> ;
+  1  CREATE or REPLACE TRIGGER emp_update
+  2   BEFORE update ON emp
+  3  BEGIN
+  4  update update_count set count=count+1;
+  5  END;
+  6  
+  7  
+  8  
+  9  
+ 10  
+ 11  
+ 12  
+ 13  
+ 14  
+ 15  
+ 16  
+ 17  
+ 18  
+ 19  
+ 20  
+ 21  
+ 22  
+ 23  
+ 24  
+ 25  
+ 26  
+ 27  
+ 28  
+ 29  
+ 30  
+ 31  
+ 32  
+ 33  
+ 34  
+ 35  
+ 36  
+ 37  
+ 38  
+ 39  
+ 40  
+ 41  
+ 42  
+ 43  
+ 44  
+ 45  
+ 46  
+ 47  
+ 48  
+ 49  
+ 50* asd
+SQL> 
+SQL> 
+SQL> 
+SQL> update emp set sal=sal+100 where empno=7369;
+
+1 행이 갱신되었습니다.
+
+SQL> select * from update_count;
+
+     COUNT                                                                      
+----------                                                                      
+         0                                                                      
+
+SQL> DROP TRIGGER emp_update;
+DROP TRIGGER emp_update
+*
+1행에 오류:
+ORA-04080: 트리거 'EMP_UPDATE'가 존재하지 않습니다 
+
+
+SQL> CREATE or REPLACE TRIGGER sp_del_before_s
+  2   BEFORE DELETE ON s
+  3  FOR EACH ROW
+  4  BEGIN
+  5    DELETE FROM sp
+  6    WHERE S# = :OLD.S#;
+  7  END;
+  8  sd
+  9  ;
+ 10  
+ 11  .
+SQL> DELETE FROM s WHERE S# = 'S1';
+DELETE FROM s WHERE S# = 'S1'
+*
+1행에 오류:
+ORA-02292: 무결성 제약조건(KING.SYS_C0011207)이 위배되었습니다- 자식 레코드가
+발견되었습니다 
+
+
+SQL> ALTER TRIGGER sp_del_before_s DISABLE;
+ALTER TRIGGER sp_del_before_s DISABLE
+*
+1행에 오류:
+ORA-04080: 트리거 'SP_DEL_BEFORE_S'가 존재하지 않습니다 
+
+
+SQL> DELETE FROM S WHERE S# = 'S2';
+DELETE FROM S WHERE S# = 'S2'
+*
+1행에 오류:
+ORA-02292: 무결성 제약조건(KING.SYS_C0011207)이 위배되었습니다- 자식 레코드가
+발견되었습니다 
+
+
+SQL> 
+SQL> ALTER TRIGGER sp_del_before_s ENABLE;
+ALTER TRIGGER sp_del_before_s ENABLE
+*
+1행에 오류:
+ORA-04080: 트리거 'SP_DEL_BEFORE_S'가 존재하지 않습니다 
+
+
+SQL> DELETE FROM S WHERE S# = 'S2';
+DELETE FROM S WHERE S# = 'S2'
+*
+1행에 오류:
+ORA-02292: 무결성 제약조건(KING.SYS_C0011207)이 위배되었습니다- 자식 레코드가
+발견되었습니다 
+
+
+SQL> 
+SQL> DROP TRIGGER sp_del_before_s;
+DROP TRIGGER sp_del_before_s
+*
+1행에 오류:
+ORA-04080: 트리거 'SP_DEL_BEFORE_S'가 존재하지 않습니다 
+
+
+SQL> CREATE OR REPLACE TRIGGER null_changer
+  2     BEFORE  INSERT ON emp
+  3   FOR EACH ROW
+  4     WHEN (NEW.sal IS NULL)
+  5     BEGIN
+  6            :NEW.sal := 0;
+  7     END;
+  8   /
+
+트리거가 생성되었습니다.
+
+SQL> 
+SQL> INSERT INTO EMP VALUES (8000, 'LEE', 'CLERK',     7782, '82-01-23', NULL, NULL, 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      8000 LEE        CLERK           7782 82/01/23          0                  
+        10                                                                      
+                                                                                
+      7369 SMITH      CLERK           7902 80/12/17       1000                  
+        20                                                                      
+                                                                                
+      7499 ALLEN      SALESMAN        7698 81/02/20       1600        300       
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500       
+        30                                                                      
+                                                                                
+      7566 JONES      MANAGER         7839 81/04/02       2975                  
+        20                                                                      
+                                                                                
+      7654 MARTIN     SALESMAN        7698 81/09/28       1250       1400       
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7698 BLAKE      MANAGER         7839 81/05/01       2850                  
+        30                                                                      
+                                                                                
+      7782 CCC        MANAGER         7839 81/09/09       2450                  
+        10                                                                      
+                                                                                
+      7788 SCOTT      ANALYST         7566 82/12/09       3000                  
+        20                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7839 CCC        PRESIDENT            81/11/17       5000                  
+        10                                                                      
+                                                                                
+      7844 TURNER     SALESMAN        7698 81/09/08       1500          0       
+        30                                                                      
+                                                                                
+      7876 ADAMS      CLERK           7788 83/01/12       1100                  
+        20                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7900 JAMES      CLERK           7698 81/12/03        950                  
+        30                                                                      
+                                                                                
+      7902 FORD       ANALYST         7566 81/12/03       3000                  
+        20                                                                      
+                                                                                
+      7934 CCC        CLERK           7782 82/01/23       1300                  
+        10                                                                      
+                                                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> 
+SQL> DROP TRIGGER null_changer;
+
+트리거가 삭제되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER day_protection
+  2  BEFORE DELETE OR INSERT OR UPDATE ON EMP
+  3  BEGIN
+  4   IF TO_CHAR(SYSDATE, 'DAY') = '화요일'
+  5      THEN
+  6           RAISE_APPLICATION_ERROR(-20005, '화요일엔 자료수정 불가!');
+  7    END IF;
+  8  END;
+  9  /
+
+트리거가 생성되었습니다.
+
+SQL> update emp set sal=sal+500 where empno=7369;
+
+1 행이 갱신되었습니다.
+
+SQL> 
+SQL> DROP TRIGGER day_protection;
+
+트리거가 삭제되었습니다.
+
+SQL> 
+SQL> CREATE TABLE emp_log (
+  2         Emp_id NUMBER(4),
+  3         Log_date DATE,
+  4         old_salary NUMBER(7, 2),
+  5         New_salary NUMBER(7, 2),
+  6         chg_rate NUMBER(7, 2)
+  7      );
+
+테이블이 생성되었습니다.
+
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER trace_log_salary
+  2      BEFORE UPDATE  ON emp
+  3      FOR EACH ROW
+  4      WHEN (new.SAL != old.SAL)
+  5  BEGIN
+  6      INSERT INTO emp_log(
+  7          Emp_id
+  8         ,Log_date
+  9         ,old_salary
+ 10         ,New_salary
+ 11         ,chg_rate
+ 12      )
+ 13      VALUES(
+ 14          :new.Empno
+ 15         ,SYSDATE
+ 16         ,:old.SAL
+ 17         ,:new.SAL
+ 18         ,(:new.SAL - :old.SAL) / :old.SAL
+ 19      );
+ 20  END;
+ 21  /
+
+트리거가 생성되었습니다.
+
+SQL> update emp set sal=sal +100 where empno=7369;
+
+1 행이 갱신되었습니다.
+
+SQL> select * from emp_log;
+
+    EMP_ID LOG_DATE OLD_SALARY NEW_SALARY   CHG_RATE                            
+---------- -------- ---------- ---------- ----------                            
+      7369 22/11/26       1500       1600        .07                            
+
+SQL> update emp set sal=700 where empno=7499;
+
+1 행이 갱신되었습니다.
+
+SQL> update emp set sal=1200 where empno=7566;
+
+1 행이 갱신되었습니다.
+
+SQL> select * from emp_log;
+
+    EMP_ID LOG_DATE OLD_SALARY NEW_SALARY   CHG_RATE                            
+---------- -------- ---------- ---------- ----------                            
+      7369 22/11/26       1500       1600        .07                            
+      7499 22/11/26       1600        700       -.56                            
+      7566 22/11/26       2975       1200        -.6                            
+
+SQL> 
+SQL> DROP TRIGGER trace_log_salary;
+
+트리거가 삭제되었습니다.
+
+SQL> DROP TABLE emp_log;
+
+테이블이 삭제되었습니다.
+
+SQL> CREATE or REPLACE TRIGGER show_s_update
+  2  BEFORE
+  3  UPDATE ON s
+  4  FOR EACH ROW
+  5  BEGIN
+  6  DBMS_OUTPUT.PUT_LINE('변경 전 컬럼 값 : ' || :old.SNAME);
+  7  DBMS_OUTPUT.PUT_LINE('변경 후 컬럼 값 : ' || :new.SNAME);
+  8  END;
+  9  /
+
+트리거가 생성되었습니다.
+
+SQL> 
+SQL> set serveroutput on;
+SQL> UPDATE S SET SNAME='HHH' WHERE S#='S1';
+변경 전 컬럼 값 : HONG                                                          
+변경 후 컬럼 값 : HHH                                                           
+
+1 행이 갱신되었습니다.
+
+SQL> 
+SQL> DROP TRIGGER show_s_update;
+
+트리거가 삭제되었습니다.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> CREATE TABLE update_name
+  2          (before  varchar(10),
+  3          after varchar(10));
+
+테이블이 생성되었습니다.
+
+SQL> INSERT INTO update_name VALUES (0, 0);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from update_name;
+
+BEFORE     AFTER                                                                
+---------- ----------                                                           
+0          0                                                                    
+
+SQL> CREATE or REPLACE TRIGGER dept_update
+  2  BEFORE update ON dept
+  3      BEGIN
+  4          update update_name set before = new.dname;
+  5          SELECT * FROM UPDATE_NAME;
+  6      END;
+  7  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> update dept set dname = asdf where dname = sales;
+update dept set dname = asdf where dname = sales
+                                           *
+1행에 오류:
+ORA-00904: "SALES": 부적합한 식별자 
+
+
+SQL> update dept set dname = asdf where dname = 'sales';
+update dept set dname = asdf where dname = 'sales'
+                        *
+1행에 오류:
+ORA-00904: "ASDF": 부적합한 식별자 
+
+
+SQL> update dept set dname = 'asdf' where dname = 'sales';
+update dept set dname = 'asdf' where dname = 'sales'
+       *
+1행에 오류:
+ORA-04098: 'KING.DEPT_UPDATE' 트리거가 부적합하며 재검증을 실패했습니다 
+
+
+SQL> CREATE or REPLACE TRIGGER dept_update
+  2  BEFORE update ON dept
+  3      BEGIN
+  4          update update_name set before = old.dname;
+  5          SELECT * FROM UPDATE_NAME;
+  6      END;
+  7  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE or REPLACE TRIGGER dept_update
+  2  BEFORE update ON dept
+  3      BEGIN
+  4          update update_name set before = old.dname;
+  5      END;
+  6  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE or REPLACE TRIGGER dept_update
+  2  BEFORE update ON dept
+  3      BEGIN
+  4          update update_name set before = old.DNAME;
+  5      END;
+  6  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> SHOW ERR
+TRIGGER DEPT_UPDATE에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+2/9      PL/SQL: SQL Statement ignored                                          
+2/41     PL/SQL: ORA-00904: "OLD"."DNAME": 부적합한 식별자                      
+SQL> ORA-00904:CREATE or REPLACE TRIGGER dept_update
+SP2-0734: "ORA-00904:..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> AFTER
+SP2-0042: 알 수 없는 명령어 "AFTER" - 나머지 줄 무시.
+SQL> update ON dept
+  2      BEGIN
+  3          update update_name set BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+update ON dept
+       *
+1행에 오류:
+ORA-00903: 테이블명이 부적합합니다 
+
+
+SQL>     END;
+SP2-0042: 알 수 없는 명령어 "END" - 나머지 줄 무시.
+SQL> CREATE or REPLACE TRIGGER dept_update
+  2  AFTER
+  3  update ON dept
+  4      BEGIN
+  5          update update_name set BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+  6      END;
+  7  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> SHOW ERR
+TRIGGER DEPT_UPDATE에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+2/9      PL/SQL: SQL Statement ignored                                          
+2/60     PL/SQL: ORA-00904: "NEW"."DNAME": 부적합한 식별자                      
+SQL> 
+SQL> CREATE or REPLACE TRIGGER DEPT_UPDATE
+  2  AFTER
+  3  UPDATE ON DEPT
+  4      BEGIN
+  5          update update_name set BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+  6      END;
+  7  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> SHOW ERR
+TRIGGER DEPT_UPDATE에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+2/9      PL/SQL: SQL Statement ignored                                          
+2/60     PL/SQL: ORA-00904: "NEW"."DNAME": 부적합한 식별자                      
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> CREATE or REPLACE TRIGGER DEPT_UPDATE
+  2  AFTER
+  3  UPDATE ON DEPT
+  4  FOR EACH ROW
+  5      BEGIN
+  6          update update_name set BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+  7      END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE or REPLACE TRIGGER DEPT_UPDATE
+  2  AFTER
+  3  UPDATE ON DEPT
+  4  FOR EACH STATEMENT
+  5      BEGIN
+  6          update update_name set BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+  7      END;
+  8  /
+FOR EACH STATEMENT
+         *
+4행에 오류:
+ORA-01912: 키워드 ROW를 지정해 주십시오 
+
+
+SQL> CREATE or REPLACE TRIGGER DEPT_UPDATE
+  2  AFTER
+  3  UPDATE ON DEPT
+  4  FOR EACH ROW
+  5      BEGIN
+  6          update update_name set BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+  7      END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2  AFTER
+  3  UPDATE ON DEPT
+  4  FOR EACH ROW
+  5      BEGIN
+  6          INSERT INTO update_name VALUES(OLD.DNAME, NEW.DNAME);
+  7          SELECT * FROM DEPT_UPDATE;
+  8      END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2  AFTER
+  3  UPDATE ON DEPT
+  4  REFERENCING NEW AS NEW OLD AS OLD
+  5  FOR EACH ROW
+  6      BEGIN
+  7          INSERT INTO update_name VALUES(OLD.DNAME, NEW.DNAME);
+  8          SELECT * FROM DEPT_UPDATE;
+  9      END;
+ 10  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      AFTER UPDATE ON DEPT
+  3      FOR EACH ROW
+  4  BEGIN
+  5      INSERT INTO update_name VALUES(OLD.DNAME, NEW.DNAME);
+  6      SELECT * FROM DEPT_UPDATE;
+  7  END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      AFTER UPDATE ON DEPT
+  3  BEGIN
+  4      INSERT INTO update_name VALUES(OLD.DNAME, NEW.DNAME);
+  5      SELECT * FROM DEPT_UPDATE;
+  6  END;
+  7  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> SHOW ERR
+TRIGGER DEPT_UPDATE에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+2/5      PL/SQL: SQL Statement ignored                                          
+2/51     PL/SQL: ORA-00984: 열을 사용할 수 없습니다                             
+3/5      PL/SQL: SQL Statement ignored                                          
+3/19     PL/SQL: ORA-00942: 테이블 또는 뷰가 존재하지 않습니다                  
+SQL> SHOW ERR
+TRIGGER DEPT_UPDATE에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+2/5      PL/SQL: SQL Statement ignored                                          
+2/51     PL/SQL: ORA-00984: 열을 사용할 수 없습니다                             
+3/5      PL/SQL: SQL Statement ignored                                          
+3/19     PL/SQL: ORA-00942: 테이블 또는 뷰가 존재하지 않습니다                  
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> SELECT * FROM UPDAte_NAME;
+
+BEFORE     AFTER                                                                
+---------- ----------                                                           
+0          0                                                                    
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      AFTER UPDATE ON DEPT
+  3      FOR EACH ROW
+  4  BEGIN
+  5      INSERT INTO update_name VALUES(OLD.DNAME, NEW.DNAME);
+  6      SELECT * FROM update_name;
+  7  END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> update dept set dname = asdf where dname = sales;
+update dept set dname = asdf where dname = sales
+                                           *
+1행에 오류:
+ORA-00904: "SALES": 부적합한 식별자 
+
+
+SQL> update dept set dname = asdf where dname = 'sales';
+update dept set dname = asdf where dname = 'sales'
+                        *
+1행에 오류:
+ORA-00904: "ASDF": 부적합한 식별자 
+
+
+SQL> update dept set dname = 'asdf' where dname = 'sales';
+update dept set dname = 'asdf' where dname = 'sales'
+       *
+1행에 오류:
+ORA-04098: 'KING.DEPT_UPDATE' 트리거가 부적합하며 재검증을 실패했습니다 
+
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE ON DEPT
+  3      FOR EACH ROW
+  4  BEGIN
+  5      INSERT INTO update_name VALUES(OLD.DNAME, NEW.DNAME);
+  6      SELECT * FROM update_name;
+  7  END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE ON DEPT
+  3      FOR EACH ROW
+  4  BEGIN
+  5      UPDATE SET update_name BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+  6      SELECT * FROM update_name;
+  7  END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE ON DEPT
+  3      FOR EACH ROW
+  4  BEGIN
+  5      UPDATE update_name SET BEFORE = OLD.DNAME, AFTER = NEW.DNAME;
+  6      SELECT * FROM update_name;
+  7  END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE ON DEPT
+  3      FOR EACH ROW
+  4  BEGIN
+  5      UPDATE update_name SET BEFORE  = OLD.DNAME, AFTER = NEW.DNAME;
+  6      SELECT * FROM update_name;
+  7  END;
+  8  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE
+  3      ON DEPT
+  4      FOR EACH ROW
+  5  BEGIN
+  6      DBMS_OUTPUT.PUT_LINE('변경 전의 값 : ' || OLD.DNAME);
+  7      DBMS_OUTPUT.PUT_LINE('변경 후의 값 : ' || NEW.DNAME);
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> update dept set dname = 'asdf' where dname = 'sales';
+update dept set dname = 'asdf' where dname = 'sales'
+       *
+1행에 오류:
+ORA-04098: 'KING.DEPT_UPDATE' 트리거가 부적합하며 재검증을 실패했습니다 
+
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE
+  3      ON dept
+  4      FOR EACH ROW
+  5  BEGIN
+  6      DBMS_OUTPUT.PUT_LINE('변경 전의 값 : ' || OLD.DNAME);
+  7      DBMS_OUTPUT.PUT_LINE('변경 후의 값 : ' || NEW.DNAME);
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2  BEFORE UPDATE
+  3  ON dept
+  4  FOR EACH ROW
+  5  BEGIN
+  6  DBMS_OUTPUT.PUT_LINE('변경 전의 값 : ' || OLD.DNAME);
+  7  DBMS_OUTPUT.PUT_LINE('변경 후의 값 : ' || NEW.DNAME);
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER DEPT_UPDATE
+  2      BEFORE UPDATE
+  3      ON DEPT
+  4      FOR EACH ROW
+  5  BEGIN
+  6      DBMS_OUTPUT.PUT_LINE('변경 전의 값 : ' || :OLD.DNAME);
+  7      DBMS_OUTPUT.PUT_LINE('변경 후의 값 : ' || :NEW.DNAME);
+  8  END;
+  9  /
+
+트리거가 생성되었습니다.
+
+SQL> update dept set dname = 'asdf' where dname = 'sales';
+
+0 행이 갱신되었습니다.
+
+SQL> rollback;
+
+롤백이 완료되었습니다.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> update dept set dname = 'asdf' where dname = 'SALES';
+변경 전의 값 : SALES                                                            
+변경 후의 값 : asdf                                                             
+
+1 행이 갱신되었습니다.
+
+SQL> 1번 정답 정답 정답
+SP2-0734: "1번 정답 ..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> 
+SQL> create table customer (
+  2      c_no    number(3),
+  3      c_name  varchar2(10),
+  4      purchase_count  number(5),
+  5      constraint customer_pk primary key (c_no));
+
+테이블이 생성되었습니다.
+
+SQL> create table goods (
+  2      g_no    number(3),
+  3      g_name  varchar2(10),
+  4      inventory  number(3),
+  5      constraint goods_pk primary key (g_no));
+
+테이블이 생성되었습니다.
+
+SQL> 
+SQL> create table purchase (
+  2      purchase_no number(3),
+  3      c_no    number(3),
+  4      g_no    number(3),
+  5      amount number(3),
+  6      purchase_date date,
+  7      constraint purchase_pk primary key (purchase_no),
+  8      constraint rent_fk1 foreign key (c_no) references customer(c_no),
+  9      constraint rent_fk2 foreign key (g_no) references goods(g_no));
+
+테이블이 생성되었습니다.
+
+SQL> 
+SQL> insert into customer values(101,'홍길동',0);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into customer values(102,'일지매',0);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into customer values(103,'임꺽정',0);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> 
+SQL> insert into goods values(501,'지우개', 100);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into goods values(502,'연필', 200);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into goods values(503,'노트', 150);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> 
+SQL> 
+SQL> select * from customer;
+
+      C_NO C_NAME     PURCHASE_COUNT                                            
+---------- ---------- --------------                                            
+       101 홍길동                  0                                            
+       102 일지매                  0                                            
+       103 임꺽정                  0                                            
+
+SQL> select * from goods;
+
+      G_NO G_NAME      INVENTORY                                                
+---------- ---------- ----------                                                
+       501 지우개            100                                                
+       502 연필              200                                                
+       503 노트              150                                                
+
+SQL> select * from purchase;
+
+선택된 레코드가 없습니다.
+
+SQL> select * from purchase;
+
+선택된 레코드가 없습니다.
+
+SQL> CREATE TABLE PURCHASE_COUNT
+  2      (COUNT NUMBER(3));
+
+테이블이 생성되었습니다.
+
+SQL> ALTER TABLE PURCHASE_COUNT
+  2      (COUNT NUMBER(3), INVENTORY NUMBER(3));
+    (COUNT NUMBER(3), INVENTORY NUMBER(3))
+    *
+2행에 오류:
+ORA-01735: 부적합한 ALTER TABLE 옵션입니다 
+
+
+SQL> CREATE TABLE PURCHASE_COUNT
+  2      (COUNT NUMBER(3), INVENTORY NUMBER(3));
+CREATE TABLE PURCHASE_COUNT
+             *
+1행에 오류:
+ORA-00955: 기존의 객체가 이름을 사용하고 있습니다. 
+
+
+SQL> 
+SQL> DROP TABLE PURCHASE_COUNT;
+
+테이블이 삭제되었습니다.
+
+SQL> CREATE TABLE PURCHASE_COUNT
+  2      (COUNT NUMBER(3), INVENTORY NUMBER(3));
+
+테이블이 생성되었습니다.
+
+SQL> INSERT INTO PURCHASE_COUNT(0, 100);
+INSERT INTO PURCHASE_COUNT(0, 100)
+                           *
+1행에 오류:
+ORA-00928: 누락된 SELECT 키워드 
+
+
+SQL> INSERT INTO PURCHASE_COUNT VALUES(0, 100);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE_COUNT
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE PURCHASE_COUNT SET COUNT = COUNT+1, INVENTORY = INVENTORY-1;
+  7  END;
+  8  /
+
+트리거가 생성되었습니다.
+
+SQL> DROP TABLE COUNTER;
+DROP TABLE COUNTER
+           *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> DROP TRIGGER COUNTER;
+
+트리거가 삭제되었습니다.
+
+SQL> DROP TABLE PURCHASE_COUNTER;
+DROP TABLE PURCHASE_COUNTER
+           *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> SELECT * FROM PURCHASE_COUNTER;
+SELECT * FROM PURCHASE_COUNTER
+              *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> DROP TABLE PURCHASE_COUNT;
+
+테이블이 삭제되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1;
+  8  END;
+  9  /
+
+트리거가 생성되었습니다.
+
+SQL> INSERT INTO PURCHASE VALUES(1, 101, 501, 1, 0);
+INSERT INTO PURCHASE VALUES(1, 101, 501, 1, 0)
+                                            *
+1행에 오류:
+ORA-00932: 일관성 없는 데이터 유형: DATE이(가) 필요하지만 NUMBER임 
+
+
+SQL> INSERT INTO PURCHASE VALUES(1, 101, 501, 1, 1999-09-01);
+INSERT INTO PURCHASE VALUES(1, 101, 501, 1, 1999-09-01)
+                                                   *
+1행에 오류:
+ORA-00932: 일관성 없는 데이터 유형: DATE이(가) 필요하지만 NUMBER임 
+
+
+SQL> INSERT INTO PURCHASE VALUES(1, 101, 501, 1, '1999-09-01');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from customer;
+
+      C_NO C_NAME     PURCHASE_COUNT                                            
+---------- ---------- --------------                                            
+       101 홍길동                  1                                            
+       102 일지매                  1                                            
+       103 임꺽정                  1                                            
+
+SQL> select * from goods;
+
+      G_NO G_NAME      INVENTORY                                                
+---------- ---------- ----------                                                
+       501 지우개             99                                                
+       502 연필              199                                                
+       503 노트              149                                                
+
+SQL> select * from purchase;
+
+PURCHASE_NO       C_NO       G_NO     AMOUNT PURCHASE                           
+----------- ---------- ---------- ---------- --------                           
+          1        101        501          1 99/09/01                           
+
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO = NEW.C_NO;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE P_NO = NEW.P_NO;
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> 
+SQL> SHOW ERROR
+TRIGGER COUNTER에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+2/5      PL/SQL: SQL Statement ignored                                          
+2/74     PL/SQL: ORA-00904: "NEW"."C_NO": 부적합한 식별자                       
+3/5      PL/SQL: SQL Statement ignored                                          
+3/61     PL/SQL: ORA-00904: "NEW"."P_NO": 부적합한 식별자                       
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO = :NEW.C_NO;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE P_NO = :NEW.P_NO;
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO = :PURCHASE.C_NO;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE P_NO = :PURCHASE.P_NO;
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> SHOW ERROR
+TRIGGER COUNTER에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+2/74     PLS-00049: 잘못된 'PURCHASE.C_NO' 변수 바인드                          
+3/61     PLS-00049: 잘못된 'PURCHASE.P_NO' 변수 바인드                          
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO = PURCHASE.C_NO;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE P_NO = PURCHASE.P_NO;
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> 
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      REFERENCING NEW AS NEW OLD AS OLD
+  5      FOR EACH ROW
+  6  BEGIN
+  7      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO = :NEW.C_NO;
+  8      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE P_NO = :NEW.P_NO;
+  9  END;
+ 10  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO =: NEW.C_NO;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE P_NO =: NEW.P_NO;
+  8  END;
+  9  /
+
+경고: 컴파일 오류와 함께 트리거가 생성되었습니다.
+
+SQL> SHOW ERR
+TRIGGER COUNTER에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+0/0      PLS-00801: 내부 오류 [ph2csql_strdef_to_diana:bind]                    
+0/0      PLS-00801: 내부 오류 [ph2csql_strdef_to_diana:bind]                    
+2/5      PL/SQL: SQL Statement ignored                                          
+2/12     PL/SQL: ORA-06544: PL/SQL: 내부 오류, 인수:                            
+         [ph2csql_strdef_to_diana:bind], [], [], [], [], [], [], []             
+                                                                                
+3/5      PL/SQL: SQL Statement ignored                                          
+3/12     PL/SQL: ORA-06544: PL/SQL: 내부 오류, 인수:                            
+         [ph2csql_strdef_to_diana:bind], [], [], [], [], [], [], []             
+                                                                                
+SQL> SHOW ERR
+TRIGGER COUNTER에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+0/0      PLS-00801: 내부 오류 [ph2csql_strdef_to_diana:bind]                    
+0/0      PLS-00801: 내부 오류 [ph2csql_strdef_to_diana:bind]                    
+2/5      PL/SQL: SQL Statement ignored                                          
+2/12     PL/SQL: ORA-06544: PL/SQL: 내부 오류, 인수:                            
+         [ph2csql_strdef_to_diana:bind], [], [], [], [], [], [], []             
+                                                                                
+3/5      PL/SQL: SQL Statement ignored                                          
+3/12     PL/SQL: ORA-06544: PL/SQL: 내부 오류, 인수:                            
+         [ph2csql_strdef_to_diana:bind], [], [], [], [], [], [], []             
+                                                                                
+SQL> SHOW ERROR
+TRIGGER COUNTER에 대한 오류:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+0/0      PLS-00801: 내부 오류 [ph2csql_strdef_to_diana:bind]                    
+0/0      PLS-00801: 내부 오류 [ph2csql_strdef_to_diana:bind]                    
+2/5      PL/SQL: SQL Statement ignored                                          
+2/12     PL/SQL: ORA-06544: PL/SQL: 내부 오류, 인수:                            
+         [ph2csql_strdef_to_diana:bind], [], [], [], [], [], [], []             
+                                                                                
+3/5      PL/SQL: SQL Statement ignored                                          
+3/12     PL/SQL: ORA-06544: PL/SQL: 내부 오류, 인수:                            
+         [ph2csql_strdef_to_diana:bind], [], [], [], [], [], [], []             
+                                                                                
+SQL> 
+SQL> CREATE OR REPLACE TRIGGER COUNTER
+  2      AFTER INSERT
+  3      ON PURCHASE
+  4      FOR EACH ROW
+  5  BEGIN
+  6      UPDATE CUSTOMER SET PURCHASE_COUNT = PURCHASE_COUNT + 1 WHERE C_NO = :NEW.C_NO;
+  7      UPDATE GOODS SET INVENTORY = INVENTORY - 1 WHERE G_NO = :NEW.G_NO;
+  8  END;
+  9  /
+
+트리거가 생성되었습니다.
+
+SQL> 2-1 정답
+SP2-0042: 알 수 없는 명령어 "2-1 정답" - 나머지 줄 무시.
+SQL> 단, 구매일시 (purchase_date)는 시스템 시각을 이용하고
+SP2-0734: "단, 구매일..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL>      구매번호 (purchase_no)는 다음과 같은 시퀀스를 이용한다
+SP2-0734: "구매번호 (..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> 
+SQL> CREATE SEQUENCE purchase_no
+  2     INCREMENT BY 1
+  3     START WITH 1
+  4     MAXVALUE 100
+  5     NOCYCLE
+  6     NOCACHE;
+
+시퀀스가 생성되었습니다.
+
+SQL> 
+SQL> 다음과 같이 입력해보자
+SP2-0734: "다음과 같..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> 
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 501, SYSDATE, 10);
+insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 501, SYSDATE, 10)
+*
+1행에 오류:
+ORA-00001: 무결성 제약 조건(KING.PURCHASE_PK)에 위배됩니다 
+
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 502, SYSDATE, 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 503, SYSDATE, 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 102, 501, SYSDATE, 20);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 103, 502, SYSDATE, 30);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from purchase;
+
+PURCHASE_NO       C_NO       G_NO     AMOUNT PURCHASE                           
+----------- ---------- ---------- ---------- --------                           
+          1        101        501          1 99/09/01                           
+          2        101        502         10 22/11/26                           
+          3        101        503         10 22/11/26                           
+          4        102        501         20 22/11/26                           
+          5        103        502         30 22/11/26                           
+
+SQL> DELETE FROM PURCHASE WHERE PURCHASE_NO = 1;
+
+1 행이 삭제되었습니다.
+
+SQL> select * from purchase;
+
+PURCHASE_NO       C_NO       G_NO     AMOUNT PURCHASE                           
+----------- ---------- ---------- ---------- --------                           
+          2        101        502         10 22/11/26                           
+          3        101        503         10 22/11/26                           
+          4        102        501         20 22/11/26                           
+          5        103        502         30 22/11/26                           
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 501, SYSDATE, 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from purchase;
+
+PURCHASE_NO       C_NO       G_NO     AMOUNT PURCHASE                           
+----------- ---------- ---------- ---------- --------                           
+          2        101        502         10 22/11/26                           
+          3        101        503         10 22/11/26                           
+          4        102        501         20 22/11/26                           
+          5        103        502         30 22/11/26                           
+          6        101        501         10 22/11/26                           
+
+SQL> DELETE FROM PURCHASE WHERE PURCHASE_NO > 1;
+
+5 행이 삭제되었습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 501, SYSDATE, 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 502, SYSDATE, 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 101, 503, SYSDATE, 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 102, 501, SYSDATE, 20);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into purchase(purchase_no, c_no, g_no, purchase_date, amount) values(purchase_no.NEXTVAL, 103, 502, SYSDATE, 30);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> 
+SQL> select * from customer;
+
+      C_NO C_NAME     PURCHASE_COUNT                                            
+---------- ---------- --------------                                            
+       101 홍길동                  7                                            
+       102 일지매                  3                                            
+       103 임꺽정                  3                                            
+
+SQL> select * from goods;
+
+      G_NO G_NAME      INVENTORY                                                
+---------- ---------- ----------                                                
+       501 지우개             95                                                
+       502 연필              195                                                
+       503 노트              147                                                
+
+SQL> select * from purchase;
+
+PURCHASE_NO       C_NO       G_NO     AMOUNT PURCHASE                           
+----------- ---------- ---------- ---------- --------                           
+          7        101        501         10 22/11/26                           
+          8        101        502         10 22/11/26                           
+          9        101        503         10 22/11/26                           
+         10        102        501         20 22/11/26                           
+         11        103        502         30 22/11/26                           
+
+SQL> SPOOL OFF

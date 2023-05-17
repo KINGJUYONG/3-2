@@ -1,0 +1,697 @@
+실습 과제
+******************************************************************************************************************************************************************
+
+
+SQL> SELECT empno, ename
+  2  FROM emp e
+  3  WHERE  (SELECT count (empno)
+  4                FROM emp
+  5                WHERE mgr= e.empno) = 0;
+
+     EMPNO ENAME                                                                
+---------- ----------                                                           
+      7369 SMITH                                                                
+      7499 ALLEN                                                                
+      7521 WARD                                                                 
+      7654 MARTIN                                                               
+      7844 TURNER                                                               
+      7876 ADAMS                                                                
+      7900 JAMES                                                                
+      7934 MILLER                                                               
+      7950 LEE_HK                                                               
+
+9 행이 선택되었습니다.
+
+SQL> 정다ㅣㅂ
+SP2-0042: 알 수 없는 명령어 "정다ㅣㅂ" - 나머지 줄 무시.
+SQL>    select ename, comm
+  2     from emp
+  3     where NVL(comm,0) <= 1000;
+
+ENAME            COMM                                                           
+---------- ----------                                                           
+SMITH                                                                           
+ALLEN             300                                                           
+WARD              500                                                           
+JONES                                                                           
+BLAKE                                                                           
+CLARK                                                                           
+SCOTT                                                                           
+KING                                                                            
+TURNER              0                                                           
+ADAMS                                                                           
+JAMES                                                                           
+
+ENAME            COMM                                                           
+---------- ----------                                                           
+FORD                                                                            
+MILLER                                                                          
+
+13 행이 선택되었습니다.
+
+SQL>    select ename, NVL(comm, 0)
+  2     from emp
+  3     where NVL(comm,0) <= 1000;
+
+ENAME      NVL(COMM,0)                                                          
+---------- -----------                                                          
+SMITH                0                                                          
+ALLEN              300                                                          
+WARD               500                                                          
+JONES                0                                                          
+BLAKE                0                                                          
+CLARK                0                                                          
+SCOTT                0                                                          
+KING                 0                                                          
+TURNER               0                                                          
+ADAMS                0                                                          
+JAMES                0                                                          
+
+ENAME      NVL(COMM,0)                                                          
+---------- -----------                                                          
+FORD                 0                                                          
+MILLER               0                                                          
+
+13 행이 선택되었습니다.
+
+SQL> SELECT salgrade, ename
+  2  FROM emp
+  3  WHERE salgrade = 1;
+WHERE salgrade = 1
+      *
+3행에 오류:
+ORA-00904: "SALGRADE": 부적합한 식별자 
+
+
+SQL> SELECT ename, sal
+  2  FROM emp
+  3  WHERE (SELECT salgrade FROM salgrade WHERE salgrade = 1) > 0;
+WHERE (SELECT salgrade FROM salgrade WHERE salgrade = 1) > 0
+                                           *
+3행에 오류:
+ORA-00904: "SALGRADE": 부적합한 식별자 
+
+
+SQL> SELECT ename, sal
+  2  FROM emp
+  3  WHERE (SELECT grade FROM salgrade WHERE grade = 1) > 0;
+
+ENAME             SAL                                                           
+---------- ----------                                                           
+SMITH             800                                                           
+ALLEN            1600                                                           
+WARD             1250                                                           
+JONES            2975                                                           
+MARTIN           1250                                                           
+BLAKE            2850                                                           
+CLARK            2450                                                           
+SCOTT            3000                                                           
+KING             5000                                                           
+TURNER           1500                                                           
+ADAMS            1100                                                           
+
+ENAME             SAL                                                           
+---------- ----------                                                           
+JAMES             950                                                           
+FORD             3000                                                           
+MILLER           1300                                                           
+LEE_HK           2450                                                           
+
+15 행이 선택되었습니다.
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE MAX(AVG(sal));
+WHERE MAX(AVG(sal))
+      *
+3행에 오류:
+ORA-00934: 그룹 함수는 허가되지 않습니다 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE (SELECT deptno FROM enp WHERE MAX(AVG(sal));
+WHERE (SELECT deptno FROM enp WHERE MAX(AVG(sal))
+       *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE (SELECT deptno FROM enp WHERE MAX(AVG(sal)) > 0;
+WHERE (SELECT deptno FROM enp WHERE MAX(AVG(sal)) > 0
+       *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE (SELECT deptno FROM enp WHERE MAX(AVG(sal)));
+WHERE (SELECT deptno FROM enp WHERE MAX(AVG(sal)))
+                                    *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE (SELECT AVG(sal) FROM enp) = MAX(sal);
+WHERE (SELECT AVG(sal) FROM enp) = MAX(sal)
+                                   *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE (SELECT MAX(AVG(sal)) FROM enp);
+WHERE (SELECT MAX(AVG(sal)) FROM enp)
+                                    *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE deptno = (SELECT MAX(AVG(sal)) FROM enp);
+WHERE deptno = (SELECT MAX(AVG(sal)) FROM enp)
+                                          *
+3행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE deptno = (SELECT MAX(AVG(sal)) FROM emp);
+WHERE deptno = (SELECT MAX(AVG(sal)) FROM emp)
+                           *
+3행에 오류:
+ORA-00978: GROUP BY 구 없이 그룹 함수가 내포되었습니다 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE deptno = (SELECT MAX(AVG(sal)) FROM emp GROUP BY deptno);
+SELECT deptno, AVG(sal)
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다 
+
+
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE deptno = (SELECT MAX(AVG(sal)) FROM emp)
+  4  GROUP BY deptno;
+WHERE deptno = (SELECT MAX(AVG(sal)) FROM emp)
+                           *
+3행에 오류:
+ORA-00978: GROUP BY 구 없이 그룹 함수가 내포되었습니다 
+
+
+SQL> 
+SQL> SELECT deptno, AVG(sal)
+  2  FROM emp
+  3  WHERE deptno = (SELECT deptno FROM emp WHERE MAX(AVG(sal)));
+WHERE deptno = (SELECT deptno FROM emp WHERE MAX(AVG(sal)))
+                                             *
+3행에 오류:
+ORA-00934: 그룹 함수는 허가되지 않습니다 
+
+
+SQL> SELECT * FROM
+  2  (SELECT deptno, AVG(sal) FROM emp
+  3  GROUP BY (deptno))
+  4  WHERE ("AVG(SAL)") = 2800;
+
+    DEPTNO   AVG(SAL)                                                           
+---------- ----------                                                           
+        10       2800                                                           
+
+SQL> SELECT deptno, ename, sal
+  2  FROM emp e
+  3  WHERE IN (SELECT empno
+  4                FROM emp
+  5                WHERE mgr= e.empno);
+WHERE IN (SELECT empno
+      *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> SELECT empno, deptno, ename, sal
+  2  FROM emp e
+  3  WHERE empno IN (SELECT empno
+  4                FROM emp
+  5                WHERE mgr = e.empno);
+
+선택된 레코드가 없습니다.
+
+SQL> SELECT empno, deptno, ename, sal
+  2  FROM emp e
+  3  WHERE e.empno IN (SELECT empno
+  4                FROM emp
+  5                WHERE mgr = e.empno);
+
+선택된 레코드가 없습니다.
+
+SQL> SELECT empno, deptno, ename, sal
+  2  FROM emp e
+  3  WHERE e.empno IN (SELECT e.empno
+  4                FROM emp
+  5                WHERE mgr = e.empno);
+
+     EMPNO     DEPTNO ENAME             SAL                                     
+---------- ---------- ---------- ----------                                     
+      7566         20 JONES            2975                                     
+      7698         30 BLAKE            2850                                     
+      7782         10 CLARK            2450                                     
+      7788         20 SCOTT            3000                                     
+      7839         10 KING             5000                                     
+      7902         20 FORD             3000                                     
+
+6 행이 선택되었습니다.
+
+SQL> SELECT deptno, ename, sal
+  2  FROM emp e
+  3  WHERE e.empno IN (SELECT e.empno
+  4                FROM emp
+  5                WHERE mgr = e.empno);
+
+    DEPTNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+        20 JONES            2975                                                
+        30 BLAKE            2850                                                
+        10 CLARK            2450                                                
+        20 SCOTT            3000                                                
+        10 KING             5000                                                
+        20 FORD             3000                                                
+
+6 행이 선택되었습니다.
+
+SQL> spool off
+
+
+
+
+******************************************************************************************************************************************************************
+
+
+
+
+SQL> SELECT AVG(SAL), MAX(SAL), MIN(SAL), SUM(SAL)
+  2  FROM EMP
+  3  WHERE JOB LIKE 'SALES%';
+
+  AVG(SAL)   MAX(SAL)   MIN(SAL)   SUM(SAL)                                     
+---------- ---------- ---------- ----------                                     
+      1400       1600       1250       5600                                     
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP;
+
+  COUNT(*)                                                                      
+----------                                                                      
+        15                                                                      
+
+SQL> SELECT COUNT(comm)
+  2  FROM EMP;
+
+COUNT(COMM)                                                                     
+-----------                                                                     
+          5                                                                     
+
+SQL> SELECT comm
+  2  FROM EMP
+  3  WHERE comm IS NOT NULL;
+
+      COMM                                                                      
+----------                                                                      
+       300                                                                      
+       500                                                                      
+      1400                                                                      
+         0                                                                      
+      2000                                                                      
+
+SQL> SELECT AVG(COMM)
+  2  FROM EMP;
+
+ AVG(COMM)                                                                      
+----------                                                                      
+       840                                                                      
+
+SQL> SELECT AVG(NVL(COMM,0))
+  2  FROM EMP;
+
+AVG(NVL(COMM,0))                                                                
+----------------                                                                
+             280                                                                
+
+SQL> SELECT COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp;
+
+    인원수 평균급여액 최고급여액 최저급여액   급여합계                          
+---------- ---------- ---------- ---------- ----------                          
+        15 2098.33333       5000        800      31475                          
+
+SQL> 
+SQL> SELECT job 직책, COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp
+  5  GROUP BY job;
+
+직책          인원수 평균급여액 최고급여액 최저급여액   급여합계                
+--------- ---------- ---------- ---------- ---------- ----------                
+CLERK              4     1037.5       1300        800       4150                
+SALESMAN           4       1400       1600       1250       5600                
+PRESIDENT          1       5000       5000       5000       5000                
+MANAGER            4    2681.25       2975       2450      10725                
+ANALYST            2       3000       3000       3000       6000                
+
+SQL> 
+SQL> SELECT job 직책, COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp
+  5  
+SQL> 
+SQL> 
+SQL> 
+SQL> SELECT deptno 부서번호, OUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp
+  5  GROUP BY deptno;
+SELECT deptno 부서번호, OUNT(empno) "인원수", AVG(sal) "평균급여액",
+                        *
+1행에 오류:
+ORA-00904: "OUNT": 부적합한 식별자 
+
+
+SQL> SELECT deptno 부서번호, COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp
+  5  GROUP BY deptno;
+
+  부서번호     인원수 평균급여액 최고급여액 최저급여액   급여합계               
+---------- ---------- ---------- ---------- ---------- ----------               
+        30          6 1566.66667       2850        950       9400               
+        20          5       2175       3000        800      10875               
+        10          4       2800       5000       1300      11200               
+
+SQL> SELECT deptno 부서번호, COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2    2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3    3             SUM(sal) "급여합계"
+  4    4  FROM emp
+  5    5  GROUP BY deptno order by deptno;
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+                   *
+2행에 오류:
+ORA-00923: FROM 키워드가 필요한 위치에 없습니다. 
+
+
+SQL> SELECT deptno 부서번호, COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp
+  5  GROUP BY deptno order by deptno;
+
+  부서번호     인원수 평균급여액 최고급여액 최저급여액   급여합계               
+---------- ---------- ---------- ---------- ---------- ----------               
+        10          4       2800       5000       1300      11200               
+        20          5       2175       3000        800      10875               
+        30          6 1566.66667       2850        950       9400               
+
+SQL> SELECT DEPTNO 부서번호, JOB 직책 , COUNT(*) 인원수, ROUND(AVG(sal),1) 평균급여
+  2  FROM EMP
+  3  GROUP BY DEPTNO, JOB
+  4  ORDER BY DEPTNO, JOB;
+
+  부서번호 직책          인원수   평균급여                                      
+---------- --------- ---------- ----------                                      
+        10 CLERK              1       1300                                      
+        10 MANAGER            2       2450                                      
+        10 PRESIDENT          1       5000                                      
+        20 ANALYST            2       3000                                      
+        20 CLERK              2        950                                      
+        20 MANAGER            1       2975                                      
+        30 CLERK              1        950                                      
+        30 MANAGER            1       2850                                      
+        30 SALESMAN           4       1400                                      
+
+9 행이 선택되었습니다.
+
+SQL> 
+SQL> SELECT DEPTNO, AVG(SAL)
+  2  FROM EMP
+  3  WHERE MAX(SAL) >=3000
+  4  GROUP BY DEPTNO;
+WHERE MAX(SAL) >=3000
+      *
+3행에 오류:
+ORA-00934: 그룹 함수는 허가되지 않습니다 
+
+
+SQL> SELECT DEPTNO,MAX(SAL), AVG(SAL)
+  2  FROM EMP
+  3  GROUP BY DEPTNO
+  4  HAVING MAX(SAL) >=3000;
+
+    DEPTNO   MAX(SAL)   AVG(SAL)                                                
+---------- ---------- ----------                                                
+        20       3000       2175                                                
+        10       5000       2800                                                
+
+SQL> SELECT  MAX(AVG(SAL))
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+
+MAX(AVG(SAL))                                                                   
+-------------                                                                   
+         2800                                                                   
+
+SQL> SELECT DEPTNO, MAX(AVG(SAL))
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+SELECT DEPTNO, MAX(AVG(SAL))
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다 
+
+
+SQL> SELECT DEPTNO, MAX(AVG(SAL))
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+SELECT DEPTNO, MAX(AVG(SAL))
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다 
+
+
+SQL> SELECT deptno, MAX(AVG(SAL))
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+SELECT deptno, MAX(AVG(SAL))
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다 
+
+
+SQL> SELECT ename, deptno
+  2        FROM emp
+  3        WHERE deptno = (SELECT deptno
+  4                      FROM emp
+  5                      WHERE empno = 7369);
+
+ENAME          DEPTNO                                                           
+---------- ----------                                                           
+SMITH              20                                                           
+JONES              20                                                           
+SCOTT              20                                                           
+ADAMS              20                                                           
+FORD               20                                                           
+
+SQL> SELECT ename, job
+  2        FROM emp
+  3        WHERE job = (SELECT job
+  4                      FROM emp
+  5                      WHERE deptno = 10);
+      WHERE job = (SELECT job
+                   *
+3행에 오류:
+ORA-01427: 단일 행 하위 질의에 2개 이상의 행이 리턴되었습니다. 
+
+
+SQL> SELECT job
+  2  FROM emp
+  3  WHERE deptno = 10;
+
+JOB                                                                             
+---------                                                                       
+MANAGER                                                                         
+PRESIDENT                                                                       
+CLERK                                                                           
+MANAGER                                                                         
+
+SQL> SELECT ename, job
+  2        FROM emp
+  3        WHERE job = any (SELECT job
+  4                      FROM emp
+  5                      WHERE deptno = 10);
+
+ENAME      JOB                                                                  
+---------- ---------                                                            
+LEE_HK     MANAGER                                                              
+CLARK      MANAGER                                                              
+BLAKE      MANAGER                                                              
+JONES      MANAGER                                                              
+KING       PRESIDENT                                                            
+MILLER     CLERK                                                                
+JAMES      CLERK                                                                
+ADAMS      CLERK                                                                
+SMITH      CLERK                                                                
+
+9 행이 선택되었습니다.
+
+SQL> SELECT SAL
+  2  FROM EMP
+  3   WHERE JOB='SALESMAN';
+
+       SAL                                                                      
+----------                                                                      
+      1600                                                                      
+      1250                                                                      
+      1250                                                                      
+      1500                                                                      
+
+SQL> 
+SQL> SELECT EMPNO, ENAME, JOB, sal
+  2  FROM EMP
+  3  WHERE SAL < any (SELECT SAL
+  4                  FROM EMP
+  5                  WHERE JOB='SALESMAN')
+  6        AND JOB <> 'SALESMAN';
+
+     EMPNO ENAME      JOB              SAL                                      
+---------- ---------- --------- ----------                                      
+      7369 SMITH      CLERK            800                                      
+      7900 JAMES      CLERK            950                                      
+      7876 ADAMS      CLERK           1100                                      
+      7934 MILLER     CLERK           1300                                      
+
+SQL> SELECT EMPNO, ENAME, JOB, sal
+  2  FROM EMP
+  3  WHERE SAL <all (SELECT SAL
+  4                  FROM EMP
+  5                  WHERE JOB='SALESMAN')
+  6   AND JOB <> 'SALESMAN';
+
+     EMPNO ENAME      JOB              SAL                                      
+---------- ---------- --------- ----------                                      
+      7876 ADAMS      CLERK           1100                                      
+      7900 JAMES      CLERK            950                                      
+      7369 SMITH      CLERK            800                                      
+
+SQL> 
+SQL> SELECT empno, ename,mgr
+  2  FROM emp;
+
+     EMPNO ENAME             MGR                                                
+---------- ---------- ----------                                                
+      7369 SMITH            7902                                                
+      7499 ALLEN            7698                                                
+      7521 WARD             7698                                                
+      7566 JONES            7839                                                
+      7654 MARTIN           7698                                                
+      7698 BLAKE            7839                                                
+      7782 CLARK            7839                                                
+      7788 SCOTT            7566                                                
+      7839 KING                                                                 
+      7844 TURNER           7698                                                
+      7876 ADAMS            7788                                                
+
+     EMPNO ENAME             MGR                                                
+---------- ---------- ----------                                                
+      7900 JAMES            7698                                                
+      7902 FORD             7566                                                
+      7934 MILLER           7782                                                
+      7950 LEE_HK           7839                                                
+
+15 행이 선택되었습니다.
+
+SQL> SELECT empno
+  2  FROM emp
+  3  WHERE mgr= 7369;
+
+선택된 레코드가 없습니다.
+
+SQL> SELECT empno
+  2  FROM emp
+  3  WHERE mgr= 7902;
+
+     EMPNO                                                                      
+----------                                                                      
+      7369                                                                      
+
+SQL> SELECT empno, enamel
+  2  FROM emp
+  3  WHERE  (SELECT count (empno)
+  4                FROM emp
+  5                WHERE mgr= empno) >0;
+SELECT empno, enamel
+              *
+1행에 오류:
+ORA-00904: "ENAMEL": 부적합한 식별자 
+
+
+SQL> SELECT empno, ename
+  2  FROM emp
+  3  WHERE  (SELECT count (empno)
+  4                FROM emp
+  5                WHERE mgr= empno) >0;
+
+선택된 레코드가 없습니다.
+
+SQL> SELECT empno, ename
+  2  FROM emp e
+  3  WHERE  (SELECT count (empno)
+  4                FROM emp
+  5                WHERE mgr= e.empno) >0;
+
+     EMPNO ENAME                                                                
+---------- ----------                                                           
+      7566 JONES                                                                
+      7698 BLAKE                                                                
+      7782 CLARK                                                                
+      7788 SCOTT                                                                
+      7839 KING                                                                 
+      7902 FORD                                                                 
+
+6 행이 선택되었습니다.
+
+SQL> 실습 과제
+SP2-0042: 알 수 없는 명령어 "실습 과제" - 나머지 줄 무시.
+SQL> SELECT empno, ename, sal
+  2  FROM emp e
+  3  WHERE EXISTS (SELECT empno
+  4                FROM emp
+  5                WHERE mgr= e.empno);
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7566 JONES            2975                                                
+      7698 BLAKE            2850                                                
+      7782 CLARK            2450                                                
+      7788 SCOTT            3000                                                
+      7839 KING             5000                                                
+      7902 FORD             3000                                                
+
+6 행이 선택되었습니다.
+
+SQL> 실습 과제
+SP2-0042: 알 수 없는 명령어 "실습 과제" - 나머지 줄 무시.

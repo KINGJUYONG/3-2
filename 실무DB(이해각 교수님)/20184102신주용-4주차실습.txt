@@ -1,0 +1,712 @@
+***********************************************************************************
+오답이 너무 많아 정답을 따로 빼도록 하겠습니다.
+
+
+1-1@@@@@@@@@@@@@@@@@@@@@@@@@@
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE (sal, deptno) IN (SELECT  MAX(sal), deptno
+  4                FROM emp
+  5                GROUP BY deptno);
+
+     EMPNO ENAME             SAL     DEPTNO
+---------- ---------- ---------- ----------
+      7698 BLAKE            2850         30
+      7788 SCOTT            3000         20
+      7839 KING             5000         10
+
+
+1-2@@@@@@@@@@@@@@@@@@@@@@@@@@
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp e
+  3  WHERE e.sal IN (SELECT  MAX(sal)
+  4                FROM emp
+  5                WHERE deptno = e.deptno);
+
+     EMPNO ENAME             SAL     DEPTNO
+---------- ---------- ---------- ----------
+      7698 BLAKE            2850         30
+      7788 SCOTT            3000         20
+      7839 KING             5000         10
+
+2@@@@@@@@@@@@@@@@@@@@@@@@@@@
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  minus
+  7  SELECT ename, deptno, job
+  8  FROM EMP
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+JAMES              30 CLERK
+
+
+3@@@@@@@@@@@@@@@@@@@@@@@@@@@
+SQL> SELECT ENAME 이름, DEPTNO 부서번호
+  2  FROM EMP
+  3  WHERE(MGR, DEPTNO) IN (SELECT EMPNO, DEPTNO FROM EMP) ORDER BY ENAME;
+
+이름         부서번호
+---------- ----------
+ADAMS              20
+ALLEN              30
+CLARK              10
+FORD               20
+JAMES              30
+LEE_HK             10
+MARTIN             30
+MILLER             10
+SCOTT              20
+SMITH              20
+TURNER             30
+
+이름         부서번호
+---------- ----------
+WARD               30
+
+12 행이 선택되었습니다.
+
+
+
+오답@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+SQL> 정답
+SP2-0042: 알 수 없는 명령어 "정답" - 나머지 줄 무시.
+SQL>
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE (sal, deptno) IN (SELECT  MAX(sal), deptno
+  4                FROM emp
+  5                WHERE deptno = e.deptno);
+              WHERE deptno = e.deptno)
+                             *
+5행에 오류:
+ORA-00904: "E"."DEPTNO": 부적합한 식별자
+
+
+SQL>
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp e
+  3  WHERE (sal, deptno) IN (SELECT  MAX(sal), deptno
+  4                FROM emp
+  5                WHERE deptno = e.deptno);
+WHERE (sal, deptno) IN (SELECT  MAX(sal), deptno
+                                          *
+3행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다
+
+
+SQL>
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp e
+  3  WHERE e.sal IN (SELECT  MAX(sal), deptno
+  4                FROM emp
+  5                WHERE deptno = e.deptno);
+WHERE e.sal IN (SELECT  MAX(sal), deptno
+                *
+3행에 오류:
+ORA-00913: 값의 수가 너무 많습니다
+
+
+SQL>
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp e
+  3  WHERE e.sal IN (SELECT  MAX(sal)
+  4                FROM emp
+  5                WHERE deptno = e.deptno);
+
+     EMPNO ENAME             SAL     DEPTNO
+---------- ---------- ---------- ----------
+      7698 BLAKE            2850         30
+      7788 SCOTT            3000         20
+      7839 KING             5000         10
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  MINUS
+  7  SELECT ename, deptno, job
+  8  FROM EMP
+  9  WHERE (deptno, job)
+ 10  IN ((20, 'CLERK'), (30, 'SALESMAN');
+IN ((20, 'CLERK'), (30, 'SALESMAN')
+   *
+10행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4  AND
+  5  job IN ('CLERK', 'SALESMAN')
+  6  MINUS
+  7  SELECT ename, deptno, job
+  8  FROM EMP
+  9  WHERE (deptno, job)
+ 10  IN ((20, 'CLERK'), 30, 'SALESMAN');
+IN ((20, 'CLERK'), 30, 'SALESMAN')
+   *
+10행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
+
+SQL>
+
+SQL> GRANT CREATE VIEW TO KING;
+
+권한이 부여되었습니다.
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  MINUS
+  7  SELECT ename, deptno, job
+  8  FROM EMP
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN');
+WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN')
+                       *
+9행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  MINUS
+  7  SELECT ename, deptno, job
+  8  FROM EMP
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+FROM EMP
+     *
+2행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> SELECT ename, deptno, job
+  2  FROM emp
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  MINUS
+  7  SELECT ename, deptno, job
+  8  FROM emp
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+FROM emp
+     *
+2행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> SELECT ename, deptno, job
+  2  FROM emp
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  minus
+  7  SELECT ename, deptno, job
+  8  FROM emp
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+FROM emp
+     *
+2행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> select ename,deptno, job from emp where deptno in (20,30) and job in ('CLERK','SALESMAN') minus select ename,deptno,job from emp where (deptno,job) in ((20,'CLERK'),(30,'SALESMAN'));
+select ename,deptno, job from emp where deptno in (20,30) and job in ('CLERK','SALESMAN') minus select ename,deptno,job from emp where (deptno,job) in ((20,'CLERK'),(30,'SALESMAN'))
+                              *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> SELECT ename, deptno, job
+  2  FROM emp
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  minus
+  7  SELECT ename, deptno, job
+  8  FROM emp
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+FROM emp
+     *
+2행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> SELECT ename, deptno, job
+  2  FROM emp
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  minus
+  7  SELECT ename, deptno, job
+  8  FROM emp
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+FROM emp
+     *
+2행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  minus
+  7  SELECT ename, deptno, job
+  8  FROM EMP
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+FROM EMP
+     *
+2행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> SELECT * FROM EMP;
+SELECT * FROM EMP
+              *
+1행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다
+
+
+SQL> CONN KING
+비밀번호 입력:
+연결되었습니다.
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN')
+  6  minus
+  7  SELECT ename, deptno, job
+  8  FROM EMP
+  9  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+JAMES              30 CLERK
+
+SQL> SELECT ENAME, DEPTNO
+  2  FROM EMP
+  3  WHERE(MGR, DEPTNO) IN (SELECT EMPNO, DEPTNO FROM EMP) ORDER BY ENAME;
+
+ENAME          DEPTNO
+---------- ----------
+ADAMS              20
+ALLEN              30
+CLARK              10
+FORD               20
+JAMES              30
+LEE_HK             10
+MARTIN             30
+MILLER             10
+SCOTT              20
+SMITH              20
+TURNER             30
+
+ENAME          DEPTNO
+---------- ----------
+WARD               30
+
+12 행이 선택되었습니다.
+
+SQL> SELECT ENAME 이름, DEPTNO 부서번호
+  2  FROM EMP
+  3  WHERE(MGR, DEPTNO) IN (SELECT EMPNO, DEPTNO FROM EMP) ORDER BY ENAME;
+
+이름         부서번호
+---------- ----------
+ADAMS              20
+ALLEN              30
+CLARK              10
+FORD               20
+JAMES              30
+LEE_HK             10
+MARTIN             30
+MILLER             10
+SCOTT              20
+SMITH              20
+TURNER             30
+
+이름         부서번호
+---------- ----------
+WARD               30
+
+12 행이 선택되었습니다.
+
+SQL>
+SQL> SELECT ENAME 이름, DEPTNO 부서번호
+  2  FROM EMP
+  3  WHERE(MGR, DEPTNO) IN (SELECT EMPNO, DEPTNO FROM EMP) ORDER BY ENAME;
+
+이름         부서번호
+---------- ----------
+ADAMS              20
+ALLEN              30
+CLARK              10
+FORD               20
+JAMES              30
+LEE_HK             10
+MARTIN             30
+MILLER             10
+SCOTT              20
+SMITH              20
+TURNER             30
+
+이름         부서번호
+---------- ----------
+WARD               30
+
+12 행이 선택되었습니다.
+
+SQL>
+SQL> SPOOL OFF
+현재 스풀되지 않고 있습니다.
+SQL>
+
+***********************************************************************************
+
+
+
+SQL*Plus: Release 12.1.0.2.0 Production on 목 9월 22 12:06:57 2022
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+사용자명 입력: KING
+비밀번호 입력:
+마지막 성공한 로그인 시간: 목 9월  22 2022 11:14:16 +09:00
+
+다음에 접속됨:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options
+
+SQL>
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN');
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+SMITH              20 CLERK
+ALLEN              30 SALESMAN
+WARD               30 SALESMAN
+MARTIN             30 SALESMAN
+TURNER             30 SALESMAN
+ADAMS              20 CLERK
+JAMES              30 CLERK
+
+7 행이 선택되었습니다.
+
+SQL> spool d:\4주차.txt
+SQL>
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN');
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+SMITH              20 CLERK
+ALLEN              30 SALESMAN
+WARD               30 SALESMAN
+MARTIN             30 SALESMAN
+TURNER             30 SALESMAN
+ADAMS              20 CLERK
+JAMES              30 CLERK
+
+7 행이 선택되었습니다.
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+
+ENAME          DEPTNO JOB
+---------- ---------- ---------
+SMITH              20 CLERK
+ALLEN              30 SALESMAN
+WARD               30 SALESMAN
+MARTIN             30 SALESMAN
+TURNER             30 SALESMAN
+ADAMS              20 CLERK
+
+6 행이 선택되었습니다.
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE (deptno, job) = (20, 'CLERK')
+  4       OR (deptno, job) =  (30, 'SALESMAN');
+WHERE (deptno, job) = (20, 'CLERK')
+                      *
+3행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
+
+SQL> conn sysdba
+비밀번호 입력:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+경고: 이제는 ORACLE에 연결되어 있지 않습니다.
+SQL> CREATE VIEW EMP_SAL_20 AS
+  2  SELECT SAL
+  3  FROM EMP
+  4  WHERE DEPTNO = 20;
+SP2-0640: 연결되지 않았습니다.
+SQL> conn KING;
+비밀번호 입력:
+연결되었습니다.
+SQL>
+SQL> CREATE VIEW EMP_SAL_20 AS
+  2  SELECT SAL
+  3  FROM EMP
+  4  WHERE DEPTNO=20;
+
+뷰가 생성되었습니다.
+
+SQL> SELECT *
+  2  FROM
+  3  EMP_SAL_20;
+
+       SAL
+----------
+       800
+      2975
+      3000
+      1100
+      3000
+
+SQL> SELECT AVG(SAL)
+  2  FROM
+  3  EMP_SAL_20;
+
+  AVG(SAL)
+----------
+      2175
+
+SQL>
+SQL> SELECT AVG(SAL)
+  2  FROM (SELECT SAL FROM EMP WHERE DEPTNO=20);
+
+  AVG(SAL)
+----------
+      2175
+
+SQL>
+SQL> SELECT AVG(SAL)
+  2  FROM  EMP
+  3  WHERE DEPTNO=20;
+
+  AVG(SAL)
+----------
+      2175
+
+SQL> SELECT empno, ename, sal
+  2  FROM emp e
+  3  WHERE EXISTS (SELECT empno
+  4                FROM emp
+  5                WHERE mgr= e.empno);
+
+     EMPNO ENAME             SAL
+---------- ---------- ----------
+      7566 JONES            2975
+      7698 BLAKE            2850
+      7782 CLARK            2450
+      7788 SCOTT            3000
+      7839 KING             5000
+      7902 FORD             3000
+
+6 행이 선택되었습니다.
+
+SQL>
+SQL> SELECT empno, ename, sal
+  2  FROM emp e
+  3  WHERE sal > (SELECT AVG(sal)
+  4        FROM emp
+  5                   WHERE e.empno = mgr);
+
+     EMPNO ENAME             SAL
+---------- ---------- ----------
+      7698 BLAKE            2850
+      7782 CLARK            2450
+      7788 SCOTT            3000
+      7839 KING             5000
+      7902 FORD             3000
+
+SQL>
+SQL> SELECT deptno FROM emp
+  2      UNION
+  3  SELECT deptno FROM dept;
+
+    DEPTNO
+----------
+        10
+        20
+        30
+        40
+
+SQL>
+SQL> SELECT deptno FROM emp
+  2      UNION ALL
+  3  SELECT deptno FROM dept;
+
+    DEPTNO
+----------
+        20
+        30
+        30
+        20
+        30
+        30
+        10
+        20
+        10
+        30
+        20
+
+    DEPTNO
+----------
+        30
+        20
+        10
+        10
+        10
+        20
+        30
+        40
+
+19 행이 선택되었습니다.
+
+SQL> SELECT deptno FROM emp
+  2      INTERSECT
+  3  SELECT deptno FROM dept;
+
+    DEPTNO
+----------
+        10
+        20
+        30
+
+SQL> SELECT deptno FROM dept
+  2      MINUS
+  3  SELECT deptno FROM emp;
+
+    DEPTNO
+----------
+        40
+
+SQL>
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE sal IN (SELECT  MAX(sal)
+  4                FROM emp
+  5                GROUP BY deptno);
+
+     EMPNO ENAME             SAL     DEPTNO
+---------- ---------- ---------- ----------
+      7698 BLAKE            2850         30
+      7788 SCOTT            3000         20
+      7839 KING             5000         10
+      7902 FORD             3000         20
+
+SQL> update emp set deptno=10 where  empno=7902
+  2  SELECT empno,ename,sal,deptno
+  3  FROM emp
+  4  WHERE sal IN (SELECT  MAX(sal)
+  5                FROM emp
+  6                GROUP BY deptno);
+SELECT empno,ename,sal,deptno
+*
+2행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다
+
+
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE sal IN (SELECT  MAX(sal)
+  4                FROM emp
+  5                GROUP BY deptno);
+
+     EMPNO ENAME             SAL     DEPTNO
+---------- ---------- ---------- ----------
+      7698 BLAKE            2850         30
+      7788 SCOTT            3000         20
+      7839 KING             5000         10
+      7902 FORD             3000         20
+
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE sal, deptno IN (SELECT  MAX(sal), deptno
+  4                FROM emp
+  5                GROUP BY deptno);
+WHERE sal, deptno IN (SELECT  MAX(sal), deptno
+         *
+3행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
+
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE sal, deptno IN (SELECT  MAX(sal), deptno
+  4                FROM emp
+  5                GROUP BY deptno);
+WHERE sal, deptno IN (SELECT  MAX(sal), deptno
+         *
+3행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
+
+SQL> SELECT empno, ename, sal, deptno
+  2  FROM emp
+  3  WHERE sal, deptno IN (SELECT MAX(sal), deptno
+  4  FROM emp
+  5  GROUP BY deptno);
+WHERE sal, deptno IN (SELECT MAX(sal), deptno
+         *
+3행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
+
+SQL> SELECT empno, ename, sal, deptno
+  2  FROM emp
+  3  WHERE (sal, deptno) IN (SELECT MAX(sal), deptno
+  4  FROM emp
+  5  GROUP BY deptno);
+
+     EMPNO ENAME             SAL     DEPTNO
+---------- ---------- ---------- ----------
+      7698 BLAKE            2850         30
+      7902 FORD             3000         20
+      7788 SCOTT            3000         20
+      7839 KING             5000         10
+
+SQL> update emp set deptno=10 where  empno=7902;
+
+1 행이 업데이트되었습니다.
+
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE sal, deptno IN (SELECT  MAX(sal), deptno
+  4                FROM emp
+  5                GROUP BY deptno);
+WHERE sal, deptno IN (SELECT  MAX(sal), deptno
+         *
+3행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다
+
